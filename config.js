@@ -7,14 +7,14 @@ module.exports = {
   BOT_TOKEN: '8644028230:AAFfcZBPKijC-A-ijEcnzXr-8Nk5WIE_jx8',
 
   // ID Telegram admin (cek via @userinfobot)
-  ADMIN_ID: -1002988805314,
+  ADMIN_ID: 8599403759,
 
   // ID atau username channel telegram untuk notifikasi video baru
   // Contoh: '@kucing_official_channel' atau '-100xxxxxxxxxx'
   CHANNEL_ID: '@saluranblue',
 
   // URL website kamu di Railway (ganti setelah deploy)
-  WEB_URL: 'https://kucing-kuy-production.up.railway.app',
+  WEB_URL: 'https://web-production-ca8da.up.railway.app',
 
   // Foto thumbnail bot
   BOT_PHOTO: 'https://files.catbox.moe/m16o6m.jpg',
