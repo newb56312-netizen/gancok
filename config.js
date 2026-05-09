@@ -4,7 +4,7 @@
 
 module.exports = {
   // Token bot dari @BotFather
-  BOT_TOKEN: '8644028230:AAFfcZBPKijC-A-ijEcnzXr-8Nk5WIE_jx8',
+  BOT_TOKEN: '8720885324:AAElR-QXZcfn07cTSIUcJ-m3tv515o_ELjM',
 
   // ID Telegram admin (cek via @userinfobot)
   ADMIN_ID: 8599403759,
