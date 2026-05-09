@@ -1,12 +1,13 @@
 // ============================================
-//   DATA MANAGER - Baca/Tulis data.json
+//   DATA MANAGER - Telegram Storage
+//   Data disimpan di pinned message channel
 // ============================================
 
-const fs = require('fs-extra');
-const path = require('path');
 const config = require('./config');
 
-const DATA_PATH = config.DATA_PATH;
+const BOT_TOKEN = process.env.BOT_TOKEN || config.BOT_TOKEN;
+const STORAGE_CHAT_ID = process.env.STORAGE_CHAT_ID;
+const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
 const DEFAULT_DATA = {
   videos: { asia: [], lokal: [], barat: [] },
@@ -24,24 +25,61 @@ const DEFAULT_DATA = {
   }
 };
 
+// ── Helper: Panggil Telegram API ──────────────────────────
+async function tg(method, params = {}) {
+  const res = await fetch(`${TELEGRAM_API}/${method}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params)
+  });
+  const json = await res.json();
+  if (!json.ok) throw new Error(`Telegram [${method}]: ${json.description}`);
+  return json.result;
+}
+
+// ── Helper: Ambil pinned message dari channel ─────────────
+async function getPinnedMessage() {
+  const chat = await tg('getChat', { chat_id: STORAGE_CHAT_ID });
+  return chat.pinned_message || null;
+}
+
+// ── ensureDataFile: Pastikan storage siap ────────────────
 async function ensureDataFile() {
   try {
-    await fs.ensureDir(path.dirname(DATA_PATH));
-    const exists = await fs.pathExists(DATA_PATH);
-    if (!exists) {
-      await fs.writeJson(DATA_PATH, DEFAULT_DATA, { spaces: 2 });
-      console.log('✅ data.json dibuat baru di:', DATA_PATH);
+    if (!STORAGE_CHAT_ID) {
+      console.error('❌ STORAGE_CHAT_ID belum diset di env Railway!');
+      return;
+    }
+    const pinned = await getPinnedMessage();
+    if (!pinned) {
+      // Belum ada data → buat pesan baru & pin
+      const msg = await tg('sendMessage', {
+        chat_id: STORAGE_CHAT_ID,
+        text: JSON.stringify(DEFAULT_DATA)
+      });
+      await tg('pinChatMessage', {
+        chat_id: STORAGE_CHAT_ID,
+        message_id: msg.message_id,
+        disable_notification: true
+      });
+      console.log('✅ Telegram storage dibuat baru (pesan di-pin)');
+    } else {
+      console.log('✅ Telegram storage ditemukan');
     }
   } catch (err) {
-    console.error('❌ Gagal inisialisasi data.json:', err.message);
+    console.error('❌ Gagal inisialisasi storage:', err.message);
   }
 }
 
+// ── readData: Baca dari pinned message ───────────────────
 async function readData() {
   try {
-    await ensureDataFile();
-    const data = await fs.readJson(DATA_PATH);
-    // Merge with defaults to handle missing keys
+    const pinned = await getPinnedMessage();
+    if (!pinned || !pinned.text) {
+      return JSON.parse(JSON.stringify(DEFAULT_DATA));
+    }
+    const data = JSON.parse(pinned.text);
+    // Merge dengan default agar key tidak hilang
     return {
       videos: { ...DEFAULT_DATA.videos, ...data.videos },
       ads: { ...DEFAULT_DATA.ads, ...data.ads }
@@ -52,9 +90,31 @@ async function readData() {
   }
 }
 
+// ── writeData: Edit pinned message dengan data baru ──────
 async function writeData(data) {
   try {
-    await fs.writeJson(DATA_PATH, data, { spaces: 2 });
+    const pinned = await getPinnedMessage();
+    const jsonStr = JSON.stringify(data);
+
+    if (pinned) {
+      // Edit pesan yang sudah ada
+      await tg('editMessageText', {
+        chat_id: STORAGE_CHAT_ID,
+        message_id: pinned.message_id,
+        text: jsonStr
+      });
+    } else {
+      // Kalau belum ada, buat & pin baru
+      const msg = await tg('sendMessage', {
+        chat_id: STORAGE_CHAT_ID,
+        text: jsonStr
+      });
+      await tg('pinChatMessage', {
+        chat_id: STORAGE_CHAT_ID,
+        message_id: msg.message_id,
+        disable_notification: true
+      });
+    }
     return true;
   } catch (err) {
     console.error('❌ Gagal menulis data:', err.message);
@@ -62,34 +122,40 @@ async function writeData(data) {
   }
 }
 
+// ── addVideo ──────────────────────────────────────────────
 async function addVideo(category, videoObj) {
   const data = await readData();
   data.videos[category].unshift(videoObj); // Terbaru di depan
   return await writeData(data);
 }
 
+// ── deleteVideo ───────────────────────────────────────────
 async function deleteVideo(category, videoId) {
   const data = await readData();
   data.videos[category] = data.videos[category].filter(v => v.id !== videoId);
   return await writeData(data);
 }
 
+// ── setAd ─────────────────────────────────────────────────
 async function setAd(type, code) {
   const data = await readData();
   data.ads[type] = code;
   return await writeData(data);
 }
 
+// ── getVideos ─────────────────────────────────────────────
 async function getVideos(category) {
   const data = await readData();
   return data.videos[category] || [];
 }
 
+// ── getAds ────────────────────────────────────────────────
 async function getAds() {
   const data = await readData();
   return data.ads;
 }
 
+// ── getStats ──────────────────────────────────────────────
 async function getStats() {
   const data = await readData();
   return {
