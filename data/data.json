@@ -1,0 +1,19 @@
+{
+  "videos": {
+    "asia": [],
+    "lokal": [],
+    "barat": []
+  },
+  "ads": {
+    "smart_link": "",
+    "social_bar": "",
+    "popunder": "",
+    "native_banner": "",
+    "banner_468x60": "",
+    "banner_160x300": "",
+    "banner_160x600": "",
+    "banner_320x50": "",
+    "banner_300x250": "",
+    "banner_728x90": ""
+  }
+}

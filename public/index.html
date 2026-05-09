@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KUCING OFFICIAL</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Lucide icons CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.min.js"></script>
+</head>
+<body>
+
+  <!-- ═══ BACKGROUND CLOUDS ANIMATION ═══ -->
+  <div class="clouds-bg" aria-hidden="true">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+    <div class="cloud c4"></div>
+    <div class="cloud c5"></div>
+    <div class="cloud c6"></div>
+    <div class="cloud c7"></div>
+    <div class="cloud c8"></div>
+    <div class="particles">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <!-- ═══ ADSTERRA: Social Bar placeholder ═══ -->
+  <div id="ad-social-bar"></div>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <img src="https://files.catbox.moe/m16o6m.jpg" alt="Logo" class="site-logo" />
+        <div class="site-branding">
+          <h1 class="site-title">KUCING OFFICIAL</h1>
+          <span class="site-tagline">Premium Video Collection</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ NAVIGATION TABS ═══ -->
+  <nav class="tab-nav">
+    <div class="tab-nav-inner">
+      <button class="tab-btn active" data-tab="asia">
+        <i data-lucide="globe-2" class="tab-icon"></i>
+        <span>Asia</span>
+      </button>
+      <button class="tab-btn" data-tab="lokal">
+        <i data-lucide="home" class="tab-icon"></i>
+        <span>Lokal</span>
+      </button>
+      <button class="tab-btn" data-tab="barat">
+        <i data-lucide="globe" class="tab-icon"></i>
+        <span>Barat</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <main class="main-content">
+
+    <!-- Top Banner Ad -->
+    <div id="ad-banner-top" class="ad-container ad-banner-top"></div>
+
+    <!-- Video Grid -->
+    <section class="video-section">
+      <div class="section-header">
+        <span id="current-cat-label" class="cat-label">
+          <i data-lucide="play-circle" class="cat-icon"></i>
+          <span>Asia</span>
+        </span>
+        <span id="video-count" class="video-count">0 Video</span>
+      </div>
+
+      <!-- Loading state -->
+      <div id="loading" class="loading-state">
+        <div class="spinner"></div>
+        <span>Memuat video...</span>
+      </div>
+
+      <!-- Empty state -->
+      <div id="empty-state" class="empty-state" style="display:none;">
+        <i data-lucide="film" class="empty-icon"></i>
+        <p>Belum ada video di kategori ini</p>
+      </div>
+
+      <!-- Grid -->
+      <div id="video-grid" class="video-grid" style="display:none;"></div>
+    </section>
+
+    <!-- Side/Bottom Banner Ads -->
+    <div class="ad-row">
+      <div id="ad-banner-160x300" class="ad-container"></div>
+      <div id="ad-banner-300x250" class="ad-container"></div>
+      <div id="ad-banner-160x600" class="ad-container"></div>
+    </div>
+
+    <div id="ad-banner-728x90" class="ad-container ad-leaderboard"></div>
+    <div id="ad-banner-468x60" class="ad-container ad-banner-468"></div>
+    <div id="ad-banner-320x50" class="ad-container ad-mobile-banner"></div>
+
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="https://files.catbox.moe/m16o6m.jpg" alt="Logo" class="footer-logo" />
+      <div class="footer-text">
+        <span class="footer-brand">KUCING OFFICIAL</span>
+        <span class="footer-copy">Premium Video Collection &copy; 2025</span>
+        <span class="footer-creator">
+          <i data-lucide="code-2" style="width:12px;height:12px;"></i>
+          Created by Kucing Official
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ VIDEO MODAL ═══ -->
+  <div id="video-modal" class="modal" style="display:none;">
+    <div class="modal-overlay" onclick="closeModal()"></div>
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">
+        <i data-lucide="x"></i>
+      </button>
+      <img id="modal-thumb" src="" alt="" class="modal-thumb" />
+      <div class="modal-info">
+        <h3 id="modal-title"></h3>
+        <button id="modal-watch-btn" class="watch-btn" onclick="watchVideo()">
+          <i data-lucide="play"></i>
+          Tonton Video
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

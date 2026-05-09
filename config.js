@@ -1,0 +1,27 @@
+// ============================================
+//   KUCING OFFICIAL - KONFIGURASI UTAMA
+// ============================================
+
+module.exports = {
+  // Token bot dari @BotFather
+  BOT_TOKEN: '8644028230:AAFfcZBPKijC-A-ijEcnzXr-8Nk5WIE_jx8',
+
+  // ID Telegram admin (cek via @userinfobot)
+  ADMIN_ID: -1002988805314,
+
+  // ID atau username channel telegram untuk notifikasi video baru
+  // Contoh: '@kucing_official_channel' atau '-100xxxxxxxxxx'
+  CHANNEL_ID: '@saluranblue',
+
+  // URL website kamu di Railway (ganti setelah deploy)
+  WEB_URL: 'https://kucing-kuy-production.up.railway.app',
+
+  // Foto thumbnail bot
+  BOT_PHOTO: 'https://files.catbox.moe/m16o6m.jpg',
+
+  // Path data storage (Railway Volume di-mount di /app/data)
+  DATA_PATH: process.env.DATA_PATH || '/app/data/data.json',
+
+  // Port server
+  PORT: process.env.PORT || 3000
+};

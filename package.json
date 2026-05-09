@@ -1,0 +1,18 @@
+{
+  "name": "kucing-official",
+  "version": "1.0.0",
+  "description": "Kucing Official - Premium Video Website",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-telegram-bot-api": "^0.64.0",
+    "fs-extra": "^11.2.0",
+    "uuid": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
