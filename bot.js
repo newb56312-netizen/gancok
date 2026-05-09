@@ -648,6 +648,10 @@ bot.on('message', async (msg) => {
 
 // ── Error handler ─────────────────────────────────────────
 bot.on('polling_error', (err) => {
+  if (err.code === 'ETELEGRAM' && err.message.includes('409')) {
+    console.log('⚠️ 409 Conflict - Railway overlap, diabaikan');
+    return;
+  }
   console.error('❌ Bot polling error:', err.message);
 });
 
